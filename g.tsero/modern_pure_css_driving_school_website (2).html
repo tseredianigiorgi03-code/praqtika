@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="ka" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velocity Drive - თანამედროვე ავტოსკოლა</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-card: #1f1f1f;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-red: #dc2626;
+            --accent-red-hover: #b91c1c;
+            --accent-red-glow: rgba(220, 38, 38, 0.4);
+            --border-color: #27272a;
+            --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --shadow-card: 0 10px 25px -5px rgba(220, 38, 38, 0.15);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --correct-green: #10b981;
+            --incorrect-red: #ef4444;
+        }
+
+        /* Light Mode Overrides */
+        html.light-theme {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-red: #dc2626;
+            --accent-red-hover: #b91c1c;
+            --accent-red-glow: rgba(220, 38, 38, 0.25);
+            --border-color: #cbd5e1;
+            --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-card: 0 10px 25px -5px rgba(220, 38, 38, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: var(--transition-smooth);
+            overflow-x: hidden;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--bg-secondary);
+            border-bottom: 2px solid var(--accent-red);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            letter-spacing: -0.025em;
+        }
+
+        .logo span {
+            color: var(--accent-red);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-red);
+            border-radius: 6px;
+            display: grid;
+            place-items: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Checkbox Hack for Mobile Menu */
+        #menu-toggle {
+            display: none;
+        }
+
+        .menu-icon {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .menu-icon span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background-color: var(--text-primary);
+            border-radius: 3px;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-menu a:hover, .nav-menu a:focus {
+            color: var(--accent-red);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        /* Theme Toggle Checkbox */
+        #theme-toggle {
+            display: none;
+        }
+
+        .theme-label {
+            cursor: pointer;
+            width: 46px;
+            height: 24px;
+            background: var(--border-color);
+            border-radius: 50px;
+            position: relative;
+            display: inline-block;
+            transition: var(--transition-smooth);
+        }
+
+        .theme-label::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            transition: var(--transition-smooth);
+        }
+
+        #theme-toggle:checked + .theme-label {
+            background: var(--accent-red);
+        }
+
+        #theme-toggle:checked + .theme-label::after {
+            left: 24px;
+            background: #ffffff;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-red);
+            color: white;
+            padding: 0.65rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 4px 14px var(--accent-red-glow);
+            transition: var(--transition-smooth);
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-red-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--accent-red-glow);
+        }
+
+        .hero {
+            position: relative;
+            min-height: 85vh;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, var(--accent-red-glow) 0%, transparent 70%);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .hero h1 span {
+            color: var(--accent-red);
+            position: relative;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+            padding: 0.65rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+            transform: translateY(-2px);
+        }
+
+        .section-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 3vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-title span {
+            color: var(--accent-red);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Hidden radios for Filter Tab System */
+        .filter-radio {
+            display: none;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .filter-label:hover {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        #filter-all:checked ~ .filter-tabs label[for="filter-all"],
+        #filter-theory:checked ~ .filter-tabs label[for="filter-theory"],
+        #filter-practice:checked ~ .filter-tabs label[for="filter-practice"],
+        #filter-intensive:checked ~ .filter-tabs label[for="filter-intensive"] {
+            background-color: var(--accent-red);
+            color: white;
+            border-color: var(--accent-red);
+            box-shadow: 0 4px 12px var(--accent-red-glow);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px) rotateX(3deg) rotateY(-3deg);
+            box-shadow: var(--shadow-card);
+            border-color: var(--accent-red);
+        }
+
+        .course-image-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .course-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .course-card:hover .course-image-container img {
+            transform: scale(1.1);
+        }
+
+        .course-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: var(--accent-red);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .course-body {
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .course-body h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .course-body p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.25rem;
+            margin-top: auto;
+        }
+
+        .course-price {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--accent-red);
+        }
+
+        #filter-all:checked ~ .courses-grid .course-card {
+            display: flex;
+        }
+        #filter-theory:checked ~ .courses-grid .course-card:not([data-category*="theory"]) {
+            display: none;
+        }
+        #filter-practice:checked ~ .courses-grid .course-card:not([data-category*="practice"]) {
+            display: none;
+        }
+        #filter-intensive:checked ~ .courses-grid .course-card:not([data-category*="intensive"]) {
+            display: none;
+        }
+
+        .pricing-section {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .pricing-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--accent-red);
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px var(--accent-red-glow);
+            background: linear-gradient(to bottom, var(--bg-card), var(--bg-primary));
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-red);
+            color: white;
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--accent-red);
+        }
+
+        .price-amount span {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--accent-red);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .pricing-card .btn-primary {
+            width: 100%;
+            text-align: center;
+        }
+
+        .simulator-section {
+            background-color: var(--bg-primary);
+        }
+
+        .simulator-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .simulator-intro {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .exam-questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .exam-question-item {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.75rem;
+        }
+
+        .exam-question-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .exam-question-title span {
+            color: var(--accent-red);
+        }
+
+        .exam-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .exam-option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .exam-option-label:hover {
+            border-color: var(--accent-red);
+            background-color: var(--bg-primary);
+        }
+
+        .exam-option-input {
+            accent-color: var(--accent-red);
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Pure CSS Instant Feedback Rules */
+        /* When an incorrect option is checked, style it red */
+        .exam-option-input.incorrect:checked + span,
+        .exam-option-input.incorrect:checked ~ .option-text,
+        input[type="radio"].incorrect:checked + .option-text {
+            color: var(--incorrect-red);
+        }
+        
+        /* Highlight correct answer when selected */
+        .exam-option-input.correct:checked ~ .option-text,
+        input[type="radio"].correct:checked + .option-text {
+            color: var(--correct-green);
+            font-weight: bold;
+        }
+
+        /* Styling for the option container feedback via pure CSS matching */
+        .exam-option-input.correct:checked ~ .exam-option-label,
+        input[type="radio"].correct:checked {
+            border-color: var(--correct-green);
+        }
+
+        /* Pure CSS instant indicator feedback using :checked on options */
+        /* If wrong option is checked, container turns reddish */
+        .exam-option-input.incorrect:checked + .exam-option-label,
+        .exam-option-input.incorrect:checked {
+            border-color: var(--incorrect-red);
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: grid;
+            place-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-backdrop:target {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            transform: scale(0.9);
+            transition: var(--transition-smooth);
+        }
+
+        .modal-backdrop:target .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-close:hover {
+            color: var(--accent-red);
+        }
+
+        .modal-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 3px var(--accent-red-glow);
+        }
+
+        .form-input:not(:placeholder-shown):invalid {
+            border-color: var(--incorrect-red);
+        }
+
+        .form-input:not(:placeholder-shown):valid {
+            border-color: var(--correct-green);
+        }
+
+        .form-checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .form-checkbox {
+            accent-color: var(--accent-red);
+            width: 16px;
+            height: 16px;
+        }
+
+        .form-submit-btn {
+            width: 100%;
+            padding: 0.85rem;
+            font-size: 1rem;
+        }
+
+        .site-footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-red);
+        }
+
+        .footer-bottom {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 992px) {
+            .menu-icon {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-secondary);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 2rem;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+                max-height: 0;
+                overflow: hidden;
+                transition: var(--transition-smooth);
+            }
+
+            #menu-toggle:checked ~ .nav-menu {
+                max-height: 400px;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .nav-container {
+                padding: 1rem;
+            }
+            .section-container {
+                padding: 4rem 1rem;
+            }
+            .simulator-container {
+                padding: 1.5rem;
+            }
+            .modal-box {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">V</div>
+                Velocity<span>Drive</span>
+            </a>
+
+            <input type="checkbox" id="menu-toggle" aria-label="მენიუს გახსნა">
+            <label for="menu-toggle" class="menu-icon" aria-label="მენიუ">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <ul class="nav-menu">
+                <li><a href="#courses">კურსები</a></li>
+                <li><a href="#pricing">ფასები</a></li>
+                <li><a href="#simulator">თეორიის ტესტები</a></li>
+                <li><a href="#contact">კონტაქტი</a></li>
+            </ul>
+
+            <div class="header-actions">
+                <input type="checkbox" id="theme-toggle" onchange="document.documentElement.classList.toggle('light-theme'); document.documentElement.classList.toggle('dark-theme');">
+                <label for="theme-toggle" class="theme-label" aria-label="თემის შეცვლა"></label>
+                
+                <a href="#register-modal" class="btn-primary">რეგისტრაცია</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>ისწავლე მართვა <span>პროფესიონალებთან</span> ერთად</h1>
+                <p>თანამედროვე ავტოსკოლა, სრული თეორიული კურსი, პრაქტიკული გაკვეთილები და გამოცდის იმიტაცია საქართველოს ყველა დიდ ქალაქში.</p>
+                <div class="hero-buttons">
+                    <a href="#register-modal" class="btn-primary">დაიწყე სწავლა ახლავე</a>
+                    <a href="#simulator" class="btn-secondary">სცადე თეორია</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="courses" class="section-container">
+            <h2 class="section-title">ჩვენი <span>კურსები</span></h2>
+            <p class="section-subtitle">აირჩიე შენთვის სასურველი მიმართულება და მიიღე მართვის მოწმობა მარტივად</p>
+
+            <input type="radio" name="filter" id="filter-all" class="filter-radio" checked>
+            <input type="radio" name="filter" id="filter-theory" class="filter-radio">
+            <input type="radio" name="filter" id="filter-practice" class="filter-radio">
+            <input type="radio" name="filter" id="filter-intensive" class="filter-radio">
+
+            <div class="filter-tabs">
+                <label for="filter-all" class="filter-label">ყველა</label>
+                <label for="filter-theory" class="filter-label">თეორია</label>
+                <label for="filter-practice" class="filter-label">პრაქტიკა</label>
+                <label for="filter-intensive" class="filter-label">ინტენსიური</label>
+            </div>
+
+            <div class="courses-grid">
+                <article class="course-card" data-category="theory">
+                    <div class="course-image-container">
+                        <img src="https://placehold.co/600x400/1f1f1f/dc2626?text=Theory" alt="თეორიული კურსი" onerror="this.src='https://placehold.co/600x400/141414/ffffff?text=Image'">
+                        <span class="course-badge">თეორია</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>სრული თეორიული კურსი</h3>
+                        <p>მოიცავს საგზაო მოძრაობის წესების სრულ პაკეტს, ბილეთების გარჩევას და შუალედურ ტესტებს.</p>
+                        <div class="course-footer">
+                            <span class="course-price">₾150</span>
+                            <a href="#register-modal" class="btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">არჩევა</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="course-card" data-category="practice">
+                    <div class="course-image-container">
+                        <img src="https://placehold.co/600x400/1f1f1f/dc2626?text=Practice" alt="პრაქტიკული გაკვეთილები" onerror="this.src='https://placehold.co/600x400/141414/ffffff?text=Image'">
+                        <span class="course-badge">პრაქტიკა</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>პრაქტიკა ავტომატიკაზე</h3>
+                        <p>მართვის პრაქტიკული გაკვეთილები ქალაქში და ავტოსადგომზე გამოცდილი ინსტრუქტორით.</p>
+                        <div class="course-footer">
+                            <span class="course-price">₾45 / გაკვეთილი</span>
+                            <a href="#register-modal" class="btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">არჩევა</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="course-card" data-category="practice">
+                    <div class="course-image-container">
+                        <img src="https://placehold.co/600x400/1f1f1f/dc2626?text=Manual" alt="მექანიკის კურსი" onerror="this.src='https://placehold.co/600x400/141414/ffffff?text=Image'">
+                        <span class="course-badge">პრაქტიკა</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>პრაქტიკა მექანიკაზე</h3>
+                        <p>მექანიკური გადაცემათა კოლოფის მართვის ტექნიკის სრული დაუფლება და მოძრაობა რეალურ პირობებში.</p>
+                        <div class="course-footer">
+                            <span class="course-price">₾50 / გაკვეთილი</span>
+                            <a href="#register-modal" class="btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">არჩევა</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="course-card" data-category="intensive">
+                    <div class="course-image-container">
+                        <img src="https://placehold.co/600x400/1f1f1f/dc2626?text=VIP" alt="ინტენსიური პაკეტი" onerror="this.src='https://placehold.co/600x400/141414/ffffff?text=Image'">
+                        <span class="course-badge">ინტენსიური</span>
+                    </div>
+                    <div class="course-body">
+                        <h3>VIP ინტენსიური პაკეტი</h3>
+                        <p>თეორია + 20 პრაქტიკული გაკვეთილი + გამოცდაზე გაყოლა გარანტირებული შედეგით.</p>
+                        <div class="course-footer">
+                            <span class="course-price">₾850</span>
+                            <a href="#register-modal" class="btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">არჩევა</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="pricing" class="section-container pricing-section">
+            <h2 class="section-title">ფასები და <span>პაკეტები</span></h2>
+            <p class="section-subtitle">აირჩიე შენზე მორგებული საუკეთესო შეთავაზება</p>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>საბაზისო</h3>
+                        <div class="price-amount">₾150 <span>/ კურსი</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>სრული თეორიული კურსი</li>
+                        <li>ონლაინ ბილეთების პლატფორმა</li>
+                        <li>2 შუალედური გამოცდა</li>
+                        <li>მხარდაჭერა 24/7</li>
+                    </ul>
+                    <a href="#register-modal" class="btn-secondary">არჩევა</a>
+                </div>
+
+                <div class="pricing-card popular">
+                    <div class="popular-badge">პოპულარული</div>
+                    <div class="pricing-header">
+                        <h3>სტანდარტული</h3>
+                        <div class="price-amount">₾550 <span>/ პაკეტი</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>თეორიული კურსი სრულად</li>
+                        <li>10 პრაქტიკული გაკვეთილი</li>
+                        <li>ავტომატიკა ან მექანიკა</li>
+                        <li>შიდა საგამოცდო ტესტირება</li>
+                        <li>ინსტრუქტორის პირადი შერჩევა</li>
+                    </ul>
+                    <a href="#register-modal" class="btn-primary">არჩევა</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>პრემიუმ</h3>
+                        <div class="price-amount">₾950 <span>/ ულიმიტო</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>ულიმიტო თეორია</li>
+                        <li>25 პრაქტიკული გაკვეთილი</li>
+                        <li>გამოცდაზე გასვლა პრიორიტეტით</li>
+                        <li>VIP მომსახურება</li>
+                        <li>გარანტირებული წარმატება</li>
+                    </ul>
+                    <a href="#register-modal" class="btn-secondary">არჩევა</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="simulator" class="section-container simulator-section">
+            <div class="simulator-container">
+                <div class="simulator-intro">
+                    <h2 class="section-title" style="margin-bottom: 0.5rem;">თეორიული გამოცდის <span>იმიტატორი</span></h2>
+                    <p class="section-subtitle" style="margin-bottom: 0;">გაიარე სრული 30 კითხვიანი ტესტირება მყისიერი პასუხების შემოწმებით</p>
+                </div>
+
+                <div class="exam-questions-list">
+                    <!-- Q1: Correct is B -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 1:</span> როდის არის ნებადართული მოძრაობის დაწყება შემხვედრი მიმართულებით?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q1" class="exam-option-input incorrect"><span class="option-text">ა) ნებისმიერ შემთხვევაში</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q1" class="exam-option-input correct"><span class="option-text">ბ) მხოლოდ მაშინ, როდესაც ეს არ შექმნის საფრთხეს და არ ზღუდავს სხვებს</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q1" class="exam-option-input incorrect"><span class="option-text">გ) კატეგორიულად აკრძალულია</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q2: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 2:</span> რა სიჩქარითაა ნებადართული მოძრაობა დასახლებულ პუნქტში?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q2" class="exam-option-input correct"><span class="option-text">ა) არა უმეტეს 60 კმ/სთ</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q2" class="exam-option-input incorrect"><span class="option-text">ბ) არა უმეტეს 50 კმ/სთ</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q2" class="exam-option-input incorrect"><span class="option-text">გ) არა უმეტეს 80 კმ/სთ</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q3: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 3:</span> რას ნიშნავს მრგვალი ლურჯი ნიშანი თეთრი ისრით მარჯვნივ?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q3" class="exam-option-input correct"><span class="option-text">ა) მხოლოდ მარჯვნივ მოძრაობის ნება</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q3" class="exam-option-input incorrect"><span class="option-text">ბ) რეკომენდებული მიმართულება</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q3" class="exam-option-input incorrect"><span class="option-text">გ) მოსახვევი წინ</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q4: Correct is B -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 4:</span> ვინ სარგებლობს უპირატესობით თანაბარმნიშვნელოვან გზაჯვარედინზე?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q4" class="exam-option-input incorrect"><span class="option-text">ა) მარცხნიდან მოძრავი ტრანსპორტი</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q4" class="exam-option-input correct"><span class="option-text">ბ) მარჯვენა მხრიდან მოძრავი ტრანსპორტი</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q4" class="exam-option-input incorrect"><span class="option-text">გ) დიდი ზომის ავტომობილი</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q5: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 5:</span> აკრძალულია თუ არა მართვის დროს მობილური ტელეფონით სარგებლობა ყურსასმენის გარეშე?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q5" class="exam-option-input correct"><span class="option-text">ა) კი, მკაცრად აკრძალულია</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q5" class="exam-option-input incorrect"><span class="option-text">ბ) დასაშვებია ნელი სიჩქარით მოძრაობისას</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q5" class="exam-option-input incorrect"><span class="option-text">გ) დასაშვებია მხოლოდ ღამის საათებში</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q6: Correct is B -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 6:</span> რა მანძილით უნდა იყოს დაცული უსაფრთხო დისტანცია მშრალ გზაზე?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q6" class="exam-option-input incorrect"><span class="option-text">ა) 1 მეტრი</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q6" class="exam-option-input correct"><span class="option-text">ბ) ისეთი, რომელიც უზრუნველყოფს უსაფრთხო გაჩერებას</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q6" class="exam-option-input incorrect"><span class="option-text">გ) მინიმუმ 20 მეტრი ნებისმიერ სიჩქარეზე</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q7: Correct is B -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 7:</span> რას ნიშნავს შუქნიშნის ყვითელი მოციმციმე სიგნალი?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q7" class="exam-option-input incorrect"><span class="option-text">ა) აკრძალულია მოძრაობა</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q7" class="exam-option-input correct"><span class="option-text">ბ) არამარეგულირებელი ჯვარედინი, ყურადღება</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q7" class="exam-option-input incorrect"><span class="option-text">გ) სასწრაფოდ გაჩერება</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q8: Correct is B -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 8:</span> როდის არის სავალდებულო უსაფრთხოების ღვედის გამოყენება?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q8" class="exam-option-input incorrect"><span class="option-text">ა) მხოლოდ წინა სავარძელზე მჯდომთათვის</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q8" class="exam-option-input correct"><span class="option-text">ბ) ავტომობილის ყველა მგზავრისთვის მოძრაობისას</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q8" class="exam-option-input incorrect"><span class="option-text">გ) მხოლოდ ქალაქგარეთ მოძრაობისას</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q9: Correct is B -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 9:</span> ვინ მართავს საგზაო მოძრაობას შუქნიშნის გაფუჭებისას?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q9" class="exam-option-input incorrect"><span class="option-text">ა) მძღოლები თავად წყვეტენ</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q9" class="exam-option-input correct"><span class="option-text">ბ) პოლიციის მარეგულირებელი</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q9" class="exam-option-input incorrect"><span class="option-text">გ) გზის ნიშნები</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q10: Correct is B -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 10:</span> დასაშვებია თუ არა გავლება ზებრა გადასასვლელზე?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q10" class="exam-option-input incorrect"><span class="option-text">ა) მკაცრად აკრძალულია</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q10" class="exam-option-input correct"><span class="option-text">ბ) დასაშვებია თუ ქვეითი არ იმყოფება</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q10" class="exam-option-input incorrect"><span class="option-text">გ) ნებადართულია ნებისმიერ დროს</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q11: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 11:</span> რას ნიშნავს მყარი თეთრი ხაზი გზის სავალ ნაწილზე?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q11" class="exam-option-input correct"><span class="option-text">ა) მისი გადაკვეთა აკრძალულია</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q11" class="exam-option-input incorrect"><span class="option-text">ბ) გადაკვეთა დასაშვებია გასწრებისას</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q11" class="exam-option-input incorrect"><span class="option-text">გ) გამაფრთხილებელი ხაზია</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q12: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 12:</span> რა არის აუცილებელი ავტომობილში ტექნიკური დათვალიერებისას?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q12" class="exam-option-input correct"><span class="option-text">ა) ცეცხლმაქრი, სამედიცინო აფთიაქი და სამკუთხედი</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q12" class="exam-option-input incorrect"><span class="option-text">ბ) მხოლოდ მუსიკალური აპარატურა</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q12" class="exam-option-input incorrect"><span class="option-text">გ) დამატებითი საბურავები</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q13: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 13:</span> როდის უნდა ჩაირთოს ავარიული შუქნიშანი?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q13" class="exam-option-input correct"><span class="option-text">ა) ავარიის ან იძულებითი გაჩერებისას</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q13" class="exam-option-input incorrect"><span class="option-text">ბ) მოსახვევში შესვლისას</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q13" class="exam-option-input incorrect"><span class="option-text">გ) მართვის მოწმობის აღებისას</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q14: Correct is B -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 14:</span> რა სიჩქარეა დაშვებული მაგისტრალზე მსუბუქი ავტომობილისთვის?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q14" class="exam-option-input incorrect"><span class="option-text">ა) 90 კმ/სთ</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q14" class="exam-option-input correct"><span class="option-text">ბ) 110 კმ/სთ</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q14" class="exam-option-input incorrect"><span class="option-text">გ) 130 კმ/სთ</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q15: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 15:</span> სად არის ნებადართული ავტომობილის გაჩერება დასახლებულ პუნქტში?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q15" class="exam-option-input correct"><span class="option-text">ა) მარჯვენა მხარეს გზის პირას ან ტროტუარზე (ნიშნების გათვალისწინებით)</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q15" class="exam-option-input incorrect"><span class="option-text">ბ) გზის შუაგულში</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q15" class="exam-option-input incorrect"><span class="option-text">გ) ავტობუსის გაჩერებაზე</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q16: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 16:</span> როდის ითვლება მძღოლი ალკოჰოლური ზემოქმედების ქვეშ?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q16" class="exam-option-input correct"><span class="option-text">ა) სისხლში 0.3 პრომილეზე მეტი შემცველობისას</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q16" class="exam-option-input incorrect"><span class="option-text">ბ) ნებისმიერი რაოდენობის მიღებისას</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q16" class="exam-option-input incorrect"><span class="option-text">გ) მხოლოდ 1.0 პრომილეზე მეტის დროს</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q17: Correct is B -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 17:</span> რას ნიშნავს სამკუთხა წითელარშიანი თეთრი ნიშანი შავი წარწერით "დათმე გზა"?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q17" class="exam-option-input incorrect"><span class="option-text">ა) მთავარი გზა</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q17" class="exam-option-input correct"><span class="option-text">ბ) უნდა დათმო გზა გამოსულ სატრანსპორტო საშუალებაზე</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q17" class="exam-option-input incorrect"><span class="option-text">გ) მოძრაობა აკრძალულია</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q18: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 18:</span> როგორ უნდა მოიქცეთ შემხვედრი ძლიერი მზის სხივების ან განათების დროს?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q18" class="exam-option-input correct"><span class="option-text">ა) შეანელოთ სიჩქარე და საჭიროებისას გაჩერდეთ</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q18" class="exam-option-input incorrect"><span class="option-text">ბ) მოუმატოთ სიჩქარეს სწრაფად გასავლელად</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q18" class="exam-option-input incorrect"><span class="option-text">გ) დახუჭოთ თვალები მოძრაობისას</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q19: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 19:</span> როდის არის ნებადართული უკუსვლით მანევრირება?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q19" class="exam-option-input correct"><span class="option-text">ა) თუ მანევრი უსაფრთხოა და არ უშლის ხელს სხვებს</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q19" class="exam-option-input incorrect"><span class="option-text">ბ) მაგისტრალზე ნებისმიერ დროს</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q19" class="exam-option-input incorrect"><span class="option-text">გ) გვირაბებში</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q20: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 20:</span> რომელი ფარის გამოყენებაა სავალდებულო გვირაბში შესვლისას?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q20" class="exam-option-input correct"><span class="option-text">ა) ახლო ან ნისლსაწინააღმდეგო ფარები</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q20" class="exam-option-input incorrect"><span class="option-text">ბ) შორმალი ფარები</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q20" class="exam-option-input incorrect"><span class="option-text">გ) გაბარიტული შუქები მარტო</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q21: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 21:</span> ვის აქვს უპირატესობა რკინიგზის გადასასვლელთან შლაგბაუმის არარსებობისას?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q21" class="exam-option-input correct"><span class="option-text">ა) მატარებელს</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q21" class="exam-option-input incorrect"><span class="option-text">ბ) ავტომობილს, თუ ის პირველი მივიდა</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q21" class="exam-option-input incorrect"><span class="option-text">გ) დიდ სატვირთოს</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q22: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 22:</span> რა არის საბურავის პროტექტორის მინიმალური დასაშვები სიმაღლე მსუბუქი ავტომობილისთვის?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q22" class="exam-option-input correct"><span class="option-text">ა) 1.6 მმ</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q22" class="exam-option-input incorrect"><span class="option-text">ბ) 0.5 მმ</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q22" class="exam-option-input incorrect"><span class="option-text">გ) 5.0 მმ</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q23: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 23:</span> დასაშვებია თუ არა ბუქსირება ყინვაში ან მოყინულ გზაზე მოქნილი გადაბმით?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q23" class="exam-option-input correct"><span class="option-text">ა) აკრძალულია</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q23" class="exam-option-input incorrect"><span class="option-text">ბ) ნებადართულია გამოცდილი მძღოლისთვის</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q23" class="exam-option-input incorrect"><span class="option-text">გ) ნებადართულია დღისით</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q24: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 24:</span> როდის არის ნებადართული ჟღერადი სიგნალის (ბიბილოს) გამოყენება დასახლებულ პუნქტში?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q24" class="exam-option-input correct"><span class="option-text">ა) მხოლოდ ავარიული სიტუაციის თავიდან ასაცილებლად</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q24" class="exam-option-input incorrect"><span class="option-text">ბ) მეგობრის მისასალმებლად</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q24" class="exam-option-input incorrect"><span class="option-text">გ) შუქნიშანზე მწვანის ანთებისას</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q25: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 25:</span> რას ნიშნავს წრიული მოძრაობის გზაჯვარედინზე შესვლა?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q25" class="exam-option-input correct"><span class="option-text">ა) წრეში მოძრავ ტრანსპორტს აქვს უპირატესობა (თუ ნიშნები სხვა რამეს არ ამბობს)</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q25" class="exam-option-input incorrect"><span class="option-text">ბ) ვინც შედის, ის სარგებლობს უპირატესობით</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q25" class="exam-option-input incorrect"><span class="option-text">გ) ყველა ჩერდება</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q26: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 26:</span> როგორი განათება უნდა იქნას გამოყენებული ნისლის დროს?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q26" class="exam-option-input correct"><span class="option-text">ა) ახლო და ნისლსაწინააღმდეგო ფარები ერთად</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q26" class="exam-option-input incorrect"><span class="option-text">ბ) მხოლოდ შორმალი ფარები</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q26" class="exam-option-input incorrect"><span class="option-text">გ) შუქების გამორთვა</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q27: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 27:</span> ვინ ითვლება ქვეითად საგზაო მოძრაობის წესების მიხედვით?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q27" class="exam-option-input correct"><span class="option-text">ა) პირი, რომელიც მოძრაობს გზაზე ფეხით და არ მართავს ტრანსპორტს</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q27" class="exam-option-input incorrect"><span class="option-text">ბ) ველოსიპედისტი</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q27" class="exam-option-input incorrect"><span class="option-text">გ) მძღოლი, რომელიც მანქანიდან გადავიდა</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q28: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 28:</span> აკრძალულია თუ არა გასწრება ხიდებზე და ესტაკადებზე?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q28" class="exam-option-input correct"><span class="option-text">ა) კი, მკაცრად აკრძალულია</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q28" class="exam-option-input incorrect"><span class="option-text">ბ) დასაშვებია თუ ფართო გზაა</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q28" class="exam-option-input incorrect"><span class="option-text">გ) ნებადართულია დღისით</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q29: Correct is A -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 29:</span> რა ასაკიდან არის დასაშვები ბავშვის წინ სავარძელზე სპეციალური სავარძელით გადაყვანა?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q29" class="exam-option-input correct"><span class="option-text">ა) დაბადებიდან შესაბამისი ზომის სავარძელით</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q29" class="exam-option-input incorrect"><span class="option-text">ბ) მხოლოდ 5 წლის ასაკიდან</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q29" class="exam-option-input incorrect"><span class="option-text">გ) 12 წლის ასაკიდან</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Q30: Correct is B -->
+                    <div class="exam-question-item">
+                        <div class="exam-question-title"><span>კითხვა 30:</span> რა ქმედებაა საჭირო საბურავის მოულოდნელი დაზიანების (გასკდომის) დროს მოძრაობისას?</div>
+                        <div class="exam-options">
+                            <label class="exam-option-label"><input type="radio" name="q30" class="exam-option-input incorrect"><span class="option-text">ა) მკვეთრად დამუხრუჭება</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q30" class="exam-option-input correct"><span class="option-text">ბ) მყარად გეჭირათ საჭე, თანდათან შეანელეთ სიჩქარე და გაჩერდით</span></label>
+                            <label class="exam-option-label"><input type="radio" name="q30" class="exam-option-input incorrect"><span class="option-text">გ) საჭის მკვეთრი მობრუნება მარჯვნივ</span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Velocity Drive</h4>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">შენი საუკეთესო პარტნიორი მართვის მოწმობის წარმატებით ასაღებად.</p>
+            </div>
+            <div class="footer-col">
+                <h4>ნავიგაცია</h4>
+                <ul class="footer-links">
+                    <li><a href="#courses">კურსები</a></li>
+                    <li><a href="#pricing">ფასები</a></li>
+                    <li><a href="#simulator">თეორიის ტესტები</a></li>
+                    <li><a href="#register-modal">რეგისტრაცია</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>ქალაქები</h4>
+                <ul class="footer-links">
+                    <li><a>თბილისი</a></li>
+                    <li><a>ბათუმი</a></li>
+                    <li><a>ქუთაისი</a></li>
+                    <li><a>რუსთავი</a></li>
+                    <li><a>ფოთი</a></li>
+                    <li><a>გორი</a></li>
+                    <li><a>ზუგდიდი</a></li>
+                    <li><a>თელავი</a></li>
+                    <li><a>ახალციხე</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>კონტაქტი</h4>
+                <ul class="footer-links">
+                    <li><a>ტელ: +995 (32) 200 00 00</a></li>
+                    <li><a>ელ-ფოსტა: info@velocitydrive.ge</a></li>
+                    <li><a>სამუშაო საათები: 08:00 - 22:00</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Velocity Drive. ყველა უფლება დაცულია.</p>
+        </div>
+    </footer>
+
+    <div id="register-modal" class="modal-backdrop">
+        <div class="modal-box">
+            <a href="#" class="modal-close" aria-label="დახურვა">&times;</a>
+            <h3 class="modal-title">სწრაფი <span>რეგისტრაცია</span></h3>
+            <p class="modal-subtitle">შეავსეთ ფორმა და ჩვენი მენეჯერი დაგიკავშირდებათ უმოკლეს დროში.</p>
+
+            <form onsubmit="event.preventDefault(); window.location.hash='';">
+                <div class="form-group">
+                    <label for="fullname" class="form-label">სრული სახელი</label>
+                    <input type="text" id="fullname" class="form-input" placeholder="მაგ: ანა ბერიძე" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">ელ-ფოსტა</label>
+                    <input type="email" id="email" class="form-input" placeholder="example@gmail.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="city" class="form-label">ქალაქი</label>
+                    <select id="city" class="form-select" required>
+                        <option value="" disabled selected>აირჩიეთ ქალაქი</option>
+                        <option value="tbilisi">თბილისი</option>
+                        <option value="batumi">ბათუმი</option>
+                        <option value="kutaisi">ქუთაისი</option>
+                        <option value="rustavi">რუსთავი</option>
+                        <option value="poti">ფოთი</option>
+                        <option value="gori">გორი</option>
+                        <option value="zugdidi">ზუგდიდი</option>
+                        <option value="telavi">თელავი</option>
+                        <option value="akhaltsikhe">ახალციხე</option>
+                        <option value="kobuleti">ქობულეთი</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeslot" class="form-label">სასურველი დრო</label>
+                    <select id="timeslot" class="form-select" required>
+                        <option value="" disabled selected>აირჩიეთ დრო (08:00 - 22:00)</option>
+                        <option value="08:00">08:00 - 10:00</option>
+                        <option value="10:00">10:00 - 12:00</option>
+                        <option value="12:00">12:00 - 14:00</option>
+                        <option value="14:00">14:00 - 16:00</option>
+                        <option value="16:00">16:00 - 18:00</option>
+                        <option value="18:00">18:00 - 20:00</option>
+                        <option value="20:00">20:00 - 22:00</option>
+                    </select>
+                </div>
+
+                <div class="form-checkbox-group">
+                    <input type="checkbox" id="terms" class="form-checkbox" required>
+                    <label for="terms">ვეთანხმები კონფიდენციალურობის პოლიტიკას და პირობებს</label>
+                </div>
+
+                <button type="submit" class="btn-primary form-submit-btn">რეგისტრაციის დასრულება</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
